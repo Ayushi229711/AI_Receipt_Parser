@@ -1,0 +1,22 @@
+name: Auto Commit
+
+on:
+  schedule:
+    - cron: '0 9 * * *'  # Daily at 9 AM UTC
+
+jobs:
+  auto-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Make a commit
+        run: |
+          git config user.email "ayushisachan229@gmail.com"
+          git config user.name "Ayushi229711"
+          echo "$(date)" >> activity.log
+          git add .
+          git commit -m "chore: daily update $(date '+%Y-%m-%d')" || echo "Nothing to commit"
+          git push
